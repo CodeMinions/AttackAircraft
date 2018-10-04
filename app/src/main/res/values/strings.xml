@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">AttackAircraftProject</string>
+
+    <item name="id_block" type="id">id_block</item>
+</resources>
