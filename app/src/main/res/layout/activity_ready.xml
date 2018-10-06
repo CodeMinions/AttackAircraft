@@ -1,39 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="#e6e6e6"
     tools:context=".ui.ReadyActivity">
 
-
-    <Button
-        android:text="Game Start"
-        android:id="@+id/id_start"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="100dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
     <RelativeLayout
+        android:background="@drawable/back1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="50dp">
-        <LinearLayout
-            android:id="@+id/map"
-            android:orientation="vertical"
+        android:layout_height="match_parent">
+
+        <Button
+            android:text="Game Start"
+            android:id="@+id/id_start"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="100dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="50dp"
-            android:background="#bbbbbb"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="15dp">
+            android:layout_marginBottom="50dp">
+            <LinearLayout
+                android:id="@+id/map"
+                android:orientation="vertical"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="50dp"
+                android:background="#bbbbbb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="15dp">
 
-        </LinearLayout>
+            </LinearLayout>
+        </RelativeLayout>
+
     </RelativeLayout>
 
 
-</RelativeLayout>
+
+
+
+</LinearLayout>

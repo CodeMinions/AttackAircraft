@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Set;
 
 import me.codeminions.attackaircraftproject.R;
+import me.codeminions.attackaircraftproject.until.L;
 import me.codeminions.attackaircraftproject.until.Location;
 import me.codeminions.attackaircraftproject.until.SerMap;
 import me.codeminions.attackaircraftproject.view.Block;
@@ -31,8 +32,10 @@ public class GamingActivity extends BaseActivity {
     private Block[][] matrix = new Block[10][10];
 
     public static void actionStart(Context context, SerMap map){
+//    public static void actionStart(Context context, SerMap map, Block[][] a){
         Intent intent = new Intent(context, GamingActivity.class);
         intent.putExtra("map", map);
+//        intent.putExtra("map_b", a);
 
         context.startActivity(intent);
     }
@@ -41,9 +44,12 @@ public class GamingActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        L.i("粗线拉ga...");
         setContentView(R.layout.activity_gaming);
 
         plane_list = (SerMap) getIntent().getSerializableExtra("map");
+//        matrix = (Block[][]) getIntent().getSerializableExtra("map_b");
+
         Set<Location> key = plane_list.map.keySet();
 
         linear = (LinearLayout) findViewById(R.id.map);
@@ -64,6 +70,7 @@ public class GamingActivity extends BaseActivity {
                 line.addView(bu);
 
                 matrix[i][j] = bu;
+//                line.addView(matrix[i][j]);
             }
         }
 
