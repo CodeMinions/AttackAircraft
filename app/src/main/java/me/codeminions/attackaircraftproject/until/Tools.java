@@ -1,15 +1,13 @@
 package me.codeminions.attackaircraftproject.until;
 
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import me.codeminions.attackaircraftproject.R;
-import me.codeminions.attackaircraftproject.ui.Man_MachineActivity;
 import me.codeminions.attackaircraftproject.view.Block;
 
 
@@ -42,7 +40,7 @@ public class Tools {
         int  i = 0;
         Location a;
         int b;
-        while(i < 10){
+        while(i < 30){
             a = RandomLocation();
             b = RandomLDirection();
             System.out.println(a.x + "  " + a.y + "         " + b);
@@ -453,17 +451,6 @@ public class Tools {
                 try {
                     if (!a[x + 3][y].isPlane && !a[x + 2][y].isPlane && !a[x + 1][y].isPlane && !a[x][y].isPlane && !a[x][y - 1].isPlane && !a[x][y + 1].isPlane && !a[x + 2][y + 1].isPlane && !a[x + 2][y + 2].isPlane && !a[x + 2][y - 1].isPlane && !a[x + 2][y - 2].isPlane) {
 
-//                        a[x + 3][y].isPlane = true;
-//                        a[x + 2][y].isPlane = true;
-//                        a[x + 1][y].isPlane = true;
-//                        a[x][y].isPlane = true;
-//                        a[x][y - 1].isPlane = true;
-//                        a[x][y + 1].isPlane = true;
-//                        a[x + 2][y + 1].isPlane = true;
-//                        a[x + 2][y + 2].isPlane = true;
-//                        a[x + 2][y - 1].isPlane = true;
-//                        a[x + 2][y - 2].isPlane = true;
-
                         plane_l.add(new Location(x + 3, y));
                         plane_l.add(new Location(x + 2, y));
                         plane_l.add(new Location(x + 1, y));
@@ -550,6 +537,18 @@ public class Tools {
                 break;
         }
         return plane_l;
+    }
+
+    public static AlertDialog.Builder setDialog(Context context, String inform, String msg){
+//        LayoutInflater inflater = LayoutInflater.from(Man_MachineActivity.this);
+//        View view_custom = inflater.inflate(R.layout.layout_success, null);
+        AlertDialog.Builder dialog = new AlertDialog.Builder(context);
+        dialog.setTitle(inform);
+        dialog.setCancelable(false);
+        if(msg != null){
+            dialog.setMessage(msg);
+        }
+        return dialog;
     }
 
 

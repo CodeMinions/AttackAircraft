@@ -1,37 +1,25 @@
 package me.codeminions.attackaircraftproject.ui;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.AlertDialogLayout;
-import android.view.LayoutInflater;
-import android.view.TextureView;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Random;
 import java.util.Set;
 
-import me.codeminions.attackaircraftproject.MainActivity;
 import me.codeminions.attackaircraftproject.R;
-import me.codeminions.attackaircraftproject.until.L;
+import me.codeminions.attackaircraftproject.application.ActivityCollector;
 import me.codeminions.attackaircraftproject.until.Location;
 import me.codeminions.attackaircraftproject.until.SerMap;
-import me.codeminions.attackaircraftproject.until.StaticClass;
 import me.codeminions.attackaircraftproject.until.Tools;
 import me.codeminions.attackaircraftproject.view.Block;
 
@@ -40,6 +28,8 @@ import me.codeminions.attackaircraftproject.view.Block;
  * 描述：接受准备界面传来的数据，开始对战
  */
 public class Man_MachineActivity extends BaseActivity implements View.OnClickListener, View.OnLongClickListener {
+
+    boolean isFirst = true;
 
     int count;
     //记录击中数
@@ -62,6 +52,7 @@ public class Man_MachineActivity extends BaseActivity implements View.OnClickLis
     Block[][] matrix;
     Block[][] matrix_s;
 
+
     public static void actionStart(Context context, SerMap map){
         Intent intent = new Intent(context, Man_MachineActivity.class);
         intent.putExtra("map", map);
@@ -74,23 +65,22 @@ public class Man_MachineActivity extends BaseActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_man_machine);
 
-        plane_list = new HashMap<>();
+
         //传入我的地图，想在linear_s中显示出来
         my_plane_list = ((SerMap) getIntent().getSerializableExtra("map")).map;
-
+        plane_list = new HashMap<>();
         init();
 
-        initView(linear);
-        initView(linear_s);
-
         //linear_s后初始化，以上操作执行后，matrix数组中保存的是linear_s中的对象
-
 
         //将自己的地图显示到屏幕,key为所有我的机头的集合
         Set<Location> key = my_plane_list.keySet();
 
-        setPlane(key);
+        setMyPlane(key);
+        setRandomPlane();
+    }
 
+    private void setRandomPlane() {
         //循环直到生成三架位置不同的飞机
         while(true) {
             //生成一个随机位置与随机方向，由此生成一架飞机的全身坐标
@@ -111,10 +101,11 @@ public class Man_MachineActivity extends BaseActivity implements View.OnClickLis
             if(plane_list.size() == 3)
                 break;
         }
-
     }
 
-    private void setPlane(Set<Location> key){
+
+
+    private void setMyPlane(Set<Location> key){
         for(Location l: key){
 //            plane_l为我的每个机头对应的机身坐标
             plane_l = my_plane_list.get(l);
@@ -149,6 +140,9 @@ public class Man_MachineActivity extends BaseActivity implements View.OnClickLis
 
         linear = (LinearLayout) findViewById(R.id.map);
         linear_s = (LinearLayout) findViewById(R.id.small_map);
+
+        initView(linear);
+        initView(linear_s);
     }
 
     private void initView(LinearLayout linear){
@@ -179,43 +173,44 @@ public class Man_MachineActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     public void onClick(View v) {
-        if(count == 12){
-            count = 0;
-            inform = new StringBuilder();
-        }
-
-        textBroad.setTextSize(13);
-        textBroad.setTextColor(getResources().getColor(R.color.select));
-        textBroad.setTypeface(Typeface.SERIF);
-        if(!((Block) v).isSelect){
-            ((Block) v).setBackgroundResource(R.drawable.select_block);
-            ((Block) v).isSelect = true;
-            Toast.makeText(v.getContext(), "(" + String.valueOf(((Block) v).getLine()) + "," + String.valueOf(((Block) v).getList()) + ")", Toast.LENGTH_SHORT).show();
-            inform.append("(" + String.valueOf(((Block) v).getLine()) + "," + String.valueOf(((Block) v).getList()) + ")" );
-
-            if(matrix[((Block) v).getLine()][((Block) v).getList()].isPlane){
-                if(matrix[((Block) v).getLine()][((Block) v).getList()].isTop) {
-                    v.setBackgroundResource(R.drawable.block_boom);
-                    boom_Count++;
-                    if(boom_Count == 3){
-                        setDialog("You Win...", null);
-                    }
-                }
-                inform.append("true" + '\n');
-            }else{
-                inform.append("false" +  '\n');
+            if(count == 10){
+                count = 0;
+                inform = new StringBuilder();
             }
-        }else{
-            ((Block) v).setBackgroundResource(R.drawable.block_bg);
-            ((Block) v).isSelect = false;
-        }
-        textBroad.setText(inform);
-        count++;
-        enemyPlane();
+
+            textBroad.setTextSize(13);
+            textBroad.setTextColor(getResources().getColor(R.color.select));
+            textBroad.setTypeface(Typeface.SERIF);
+            if(!((Block) v).isSelect){
+                ((Block) v).setBackgroundResource(R.drawable.select_block);
+                ((Block) v).isSelect = true;
+                Toast.makeText(v.getContext(), "(" + String.valueOf(((Block) v).getLine()) + "," + String.valueOf(((Block) v).getList()) + ")", Toast.LENGTH_SHORT).show();
+                inform.append("(" + String.valueOf(((Block) v).getLine()) + "," + String.valueOf(((Block) v).getList()) + ")" );
+
+                if(matrix[((Block) v).getLine()][((Block) v).getList()].isPlane){
+                    if(matrix[((Block) v).getLine()][((Block) v).getList()].isTop) {
+                        v.setBackgroundResource(R.drawable.block_boom);
+                        boom_Count++;
+                        if(boom_Count == 3){
+                            setDialog("You Win...", null);
+                        }
+                    }
+                    inform.append("true" + '\n');
+                }else{
+                    inform.append("false" +  '\n');
+                }
+            }else{
+                ((Block) v).setBackgroundResource(R.drawable.block_bg);
+                ((Block) v).isSelect = false;
+            }
+            textBroad.setText(inform);
+            count++;
+            enemyAttach();
+
     }
 
 
-    public void enemyPlane(){
+    public void enemyAttach(){
         Location l;
         while (true){
             l = Tools.RandomLocation();
@@ -234,31 +229,20 @@ public class Man_MachineActivity extends BaseActivity implements View.OnClickLis
             be_Boom_Count++;
             if(be_Boom_Count == 3){
                 setDialog("You Fail...", "跟机器人打都能输？？？");
+
             }
         }
     }
-
-    public void setDialog(String inform, String msg){
-//        LayoutInflater inflater = LayoutInflater.from(Man_MachineActivity.this);
-//        View view_custom = inflater.inflate(R.layout.layout_success, null);
-        AlertDialog.Builder dialog = new AlertDialog.Builder(Man_MachineActivity.this);
-        dialog.setTitle(inform);
-        dialog.setCancelable(false);
-        if(msg != null){
-            dialog.setMessage(msg);
-        }
-
-        dialog.setPositiveButton("离开...", new DialogInterface.OnClickListener() {
-            //        view_custom.findViewById(R.id.btn_finish).setOnClickListener(new View.OnClickListener(){
+    public void setDialog(String inform, String mag){
+        AlertDialog.Builder dialog = Tools.setDialog(this, inform, mag);
+        dialog.setPositiveButton("Leave", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int whitch){
-                finish();
+            public void onClick(DialogInterface dialog, int which) {
+                ActivityCollector.removeActivity(Man_MachineActivity.this);
             }
         });
-
         dialog.show();
     }
-
 
 
     @Override

@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Set;
 
 import me.codeminions.attackaircraftproject.R;

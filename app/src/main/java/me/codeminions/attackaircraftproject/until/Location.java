@@ -2,11 +2,12 @@ package me.codeminions.attackaircraftproject.until;
 
 import java.io.Serializable;
 
+
 /**
  * 创建时间：2018/10/4 0:00
  * 描述：TODO
  */
-public class Location implements Serializable {
+public class Location  implements Serializable {
     public int x;
     public int y;
 

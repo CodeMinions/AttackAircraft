@@ -10,12 +10,24 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
+
+    packagingOptions {
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/rxjava.properties'
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+//            aaptOptions.cruncherEnabled = false
+//            aaptOptions.useNewCruncher = false
         }
     }
+    useLibrary 'org.apache.http.legacy'
+
 }
 
 dependencies {
@@ -27,4 +39,11 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+
+    implementation 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+
+    implementation 'cn.bmob.android:bmob-im:2.0.6@aar'
+    implementation 'cn.bmob.android:bmob-sdk:3.6.3'
 }
+

@@ -1,23 +1,20 @@
 package me.codeminions.attackaircraftproject.ui;
 
-import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
+import cn.bmob.newim.bean.BmobIMUserInfo;
 import me.codeminions.attackaircraftproject.R;
-import me.codeminions.attackaircraftproject.until.L;
 import me.codeminions.attackaircraftproject.until.Location;
 import me.codeminions.attackaircraftproject.until.SerMap;
 import me.codeminions.attackaircraftproject.until.StaticClass;
@@ -40,14 +37,30 @@ public class ReadyActivity extends BaseActivity implements View.OnClickListener 
     //地图矩阵
     private Block[][] a = new Block[10][10];
 
-    public static void actionStart(Context context){
-        context.startActivity(new Intent(context, ReadyActivity.class));
+    private int GAME_MODE;
+
+    String deviceName;
+
+    // FIXME: 2018/10/7 可以判断一下从哪一个界面跳过来的。
+    public static void actionStart(Context context, @Nullable String info){
+        Intent intent = new Intent(context, ReadyActivity.class);
+        if(info != null) {
+            intent.putExtra("Device", info);
+        }
+        context.startActivity(intent);
     }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ready);
+        if(getIntent() != null){
+            deviceName = getIntent().getStringExtra("Device");
+            GAME_MODE = StaticClass.MAN;
+        }else {
+            GAME_MODE = StaticClass.MACHINE;
+        }
+
 
         findViewById(R.id.id_start).setOnClickListener(this);
         plane_list = new HashMap<>();
@@ -92,25 +105,37 @@ public class ReadyActivity extends BaseActivity implements View.OnClickListener 
          *  为消除非Block按钮对界面影响
          **/
         if(v.getId() == R.id.id_start) {
-//            GamingActivity.actionStart(v.getContext(), new SerMap(plane_list));
-            Man_MachineActivity.actionStart(v.getContext(), new SerMap(plane_list));
+            if(plane_list.size() != 3){
+                AlertDialog.Builder dialog = Tools.setDialog(this, "请选择飞机（至少3架）...", null);
+                dialog.setCancelable(true);
+                dialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {}
+                        });
+                dialog.show();
+//                Toast.makeText(v.getContext(), "sanjia", Toast.LENGTH_SHORT).show();
+            } else{
+                if(GAME_MODE == StaticClass.MAN){
+                    Man_ManActivity.actionStart(v.getContext(), new SerMap(plane_list), deviceName);
+                }else{
+                    Man_MachineActivity.actionStart(v.getContext(), new SerMap(plane_list));
+                }
+                finish();
+            }
+        }else {
 
-//            GamingActivity.actionStart(v.getContext(), new SerMap(plane_list, a));
-//            GamingActivity.actionStart(v.getContext(), new SerMap(plane_list), a);
+            int x = ((Block) v).getLine();
+            int y = ((Block) v).getList();
+
+            plane_l = Tools.getPlaneBody(new Location(x, y), a, ((Block) v).isDirection);
+            if (plane_l.size() != 0)
+                plane_list.put(plane_l.get(0), plane_l);
+
+            switch (v.getId()) {
+                case R.id.id_block:
+                    break;
+            }
         }
-
-        int x = ((Block) v).getLine();
-        int y = ((Block) v).getList();
-
-        plane_l = Tools.getPlaneBody(new Location(x, y), a, ((Block) v).isDirection);
-        if(plane_l.size() != 0)
-            plane_list.put(plane_l.get(0), plane_l);
-
-        switch (v.getId()) {
-            case R.id.id_block:
-                break;
-        }
-
     }
 
     @Override

@@ -2,6 +2,28 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="me.codeminions.attackaircraftproject">
 
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+
+    <!--允许联网 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!--获取GSM（2g）、WCDMA（联通3g）等网络状态的信息  -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!--获取wifi网络状态的信息 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <!--保持CPU 运转，屏幕和键盘灯有可能是关闭的,用于文件上传和下载 -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!--获取sd卡写的权限，用于文件上传和下载-->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!--允许读取手机状态 用于创建BmobInstallation-->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
+    <!--蓝牙权限-->
+    <!--<uses-permission android:name="android.permission.BLUETOOTH" />-->
+    <!--<uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />-->
+
+
+
     <application
         android:name=".application.BaseApplication"
         android:allowBackup="true"
@@ -10,7 +32,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.ReadyActivity"
+        <meta-data
+            android:name="Bmob_APP_KEY"
+            android:value="34207183fec4d83340c389e091139d8f" />
+        <activity
+            android:name=".MainActivity"
             android:theme="@style/NoActivityFullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,16 +45,45 @@
             </intent-filter>
         </activity>
 
-        <!--<activity android:name=".ui.ReadyActivity"-->
-            <!--android:label="准备游戏"/>-->
-        <activity android:name=".MainActivity"/>
+        <activity android:name=".ui.ReadyActivity"
+             android:theme="@style/NoActivityFullscreen"
+         android:label="准备游戏"/>
 
-        <activity android:name=".ui.GamingActivity"/>
+        <activity android:name=".ui.GamingActivity" />
 
-        <activity android:name=".ui.Man_MachineActivity"
+        <activity
+            android:name=".ui.Man_MachineActivity"
             android:label="人机对战模式界面"
-            android:theme="@style/NoActivityFullscreen"/>
+            android:theme="@style/NoActivityFullscreen" />
+        <activity android:name=".ui.Man_ManActivity"
+            android:label="双人对战模式界面"/>
 
+        <activity android:name=".TextActivity"/>
+
+        <activity android:name=".ui.ChooseModeActivity"
+            android:label="选择对战模式"/>
+
+        <activity android:name=".ui.DeviceLinkActivity"
+            android:label="选择设备"/>
+
+
+        <!--TODO 集成：1.2、添加推送所需要的服务和广播-->
+        <receiver android:name="cn.bmob.newim.core.ConnectChangeReceiver">
+            <intent-filter>
+                <action android:name="cn.bmob.action.RECONNECT" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.USER_PRESENT" />
+            </intent-filter>
+        </receiver>
+        <service
+            android:name="cn.bmob.newim.core.service.BmobIMService"
+            android:process=":bmobcore" />
+        <service
+            android:name="cn.bmob.newim.core.service.NotifyService"
+            android:process=":bmobcore" />
+        <service android:name="cn.bmob.newim.core.service.ReConnectService" />
+        <service android:name="cn.bmob.newim.core.service.HeartBeatService" />
     </application>
 
 </manifest>

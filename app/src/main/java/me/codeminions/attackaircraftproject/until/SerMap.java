@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import me.codeminions.attackaircraftproject.view.Block;
-
 /**
  * 创建时间：2018/10/4 12:46
  * 描述：定义一个序列化集合，使得该数据可以被传递到下一activity

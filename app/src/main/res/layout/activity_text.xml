@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/text_back"
+    tools:context=".TextActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="游戏说明"
+                android:textSize="50sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:visibility="visible"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="轮流点击，直到击爆敌方飞机机头！！！斗智斗勇，险象迭生！！！看谁能在枪林弹雨擒得敌首！！！"
+                android:textStyle="bold"
+                android:textSize="25sp" />
+            <TextView
+                android:visibility="visible"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="在各自的坐标轴中任意摆放飞机（不可重叠）。飞机形状如下。点击方格选择机头，再点一次取消机头。确定机头后再通过四个引导箭头选择飞机摆向。"
+                android:textSize="25sp" />
+
+            <ImageView
+                android:visibility="visible"
+                android:layout_width="250dp"
+                android:layout_height="250dp"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/text01" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="游戏界面中，在下方的坐标轴中，点击方格，通过左上角的信息推测敌机摆放，击爆飞机头，则方格为红，长按方格则方格变黑（可用于标记方格），再长按复原。右上角为我方地图。红黑色方格为对方点击的坐标，红色为集中飞机的坐标。"
+                android:textSize="25sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="430dp"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/text02" />
+        </LinearLayout>
+    </ScrollView>
+
+
+</LinearLayout>
