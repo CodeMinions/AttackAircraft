@@ -25,6 +25,8 @@ public class Block extends AppCompatButton implements Serializable{
     public boolean isFalse = false;
     ////标记为被选中
     public boolean isSelect = false;
+    //标记为已爆炸
+    public boolean isBoom = false;
 
 
     public int getLine() {

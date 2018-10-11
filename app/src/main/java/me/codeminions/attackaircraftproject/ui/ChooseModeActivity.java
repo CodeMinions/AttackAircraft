@@ -9,7 +9,6 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
-import cn.bmob.newim.bean.BmobIMUserInfo;
 import me.codeminions.attackaircraftproject.R;
 
 /**
@@ -17,6 +16,9 @@ import me.codeminions.attackaircraftproject.R;
  * 描述：选择对战模式，人人或人机
  */
 public class ChooseModeActivity extends BaseActivity {
+
+    RadioButton button1;
+    RadioButton button2;
 
     public static void actionStart(Context context){
         context.startActivity(new Intent(context, ChooseModeActivity.class));
@@ -28,8 +30,8 @@ public class ChooseModeActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_mode);
 
-        final RadioButton button1 =  (RadioButton) findViewById(R.id.btn_ptp);
-        final RadioButton button2 =  (RadioButton) findViewById(R.id.btn_ptm);
+        button1 =  (RadioButton) findViewById(R.id.btn_ptp);
+        button2 =  (RadioButton) findViewById(R.id.btn_ptm);
         Button button3 =  (Button) findViewById(R.id.btn_start);
 
         button1.setOnClickListener(new View.OnClickListener(){
@@ -46,7 +48,6 @@ public class ChooseModeActivity extends BaseActivity {
             public void onClick(View v) {
                 button2.setChecked(true);
                 button1.setChecked(false);
-                ReadyActivity.actionStart(v.getContext(), null);
             }
         });
         button3.setOnClickListener(new View.OnClickListener(){
@@ -65,6 +66,7 @@ public class ChooseModeActivity extends BaseActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        info = data.getStringExtra("info");
+        info = data.getStringExtra("device");
+        button1.setChecked(true);
     }
 }

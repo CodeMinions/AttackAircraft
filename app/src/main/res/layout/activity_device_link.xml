@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/text_back2"
+    tools:context=".ui.DeviceLinkActivity"
+    android:orientation="vertical">
+
+    <TextView
+        android:text="@string/txt_device"
+        android:textSize="15sp"
+        android:id="@+id/tv_myid"
+        android:gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="48dp" />
+
+    <LinearLayout
+        android:layout_margin="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+        <EditText
+            android:id="@+id/et_connect_id"
+            android:textSize="13sp"
+            android:hint="@string/hint_server"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:inputType="text" />
+        <EditText
+            android:id="@+id/et_receiver_id"
+            android:textSize="13sp"
+            android:hint="@string/hint_receive"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:inputType="text" />
+        <Button
+            android:id="@+id/btn_connect"
+            android:background="@drawable/btn_link"
+            android:layout_width="85dp"
+            android:text="@string/btn_startLink"
+            android:layout_height="38dp" />
+    </LinearLayout>
+
+    <Button
+        android:text="@string/btn_start2"
+        android:id="@+id/btn_start"
+        android:visibility="gone"
+        android:layout_margin="10dp"
+        android:background="@drawable/btn_link"
+        android:layout_width="match_parent"
+        android:layout_height="40dp" />
+    <Button
+        android:text="@string/btn_sendId"
+        android:id="@+id/btn_sendid"
+        android:visibility="gone"
+        android:layout_margin="10dp"
+        android:background="@drawable/btn_link"
+        android:layout_width="match_parent"
+        android:layout_height="40dp" />
+
+    <TextView
+        android:textColor="#000000"
+        android:id="@+id/tv_message"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+    <LinearLayout
+        android:layout_margin="5dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/et_message"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:maxLines="3"
+            android:inputType="text" />
+
+        <Button
+            android:id="@+id/btn_send"
+            android:layout_gravity="center_vertical"
+            android:text="@string/btn_sendId"
+            android:background="@drawable/btn_link"
+            android:layout_width="wrap_content"
+            android:layout_height="38dp" />
+    </LinearLayout>
+
+</LinearLayout>

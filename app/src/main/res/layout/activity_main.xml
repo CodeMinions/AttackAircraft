@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:background="@drawable/back1"
+    android:background="@drawable/back3"
     android:gravity="center"
     tools:context=".TestActivity">
 

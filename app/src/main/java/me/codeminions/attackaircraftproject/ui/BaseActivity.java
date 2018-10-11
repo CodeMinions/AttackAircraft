@@ -11,6 +11,9 @@ import me.codeminions.attackaircraftproject.application.ActivityCollector;
  * 描述：TODO
  */
 public abstract class BaseActivity extends AppCompatActivity {
+
+    public static String BmobData = null;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

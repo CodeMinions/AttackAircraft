@@ -395,7 +395,8 @@ public class Tools {
                         a[x + 3][y].isDirection = StaticClass.BOTTOM;
                     }
                 } catch (ArrayIndexOutOfBoundsException e) {
-                    Toast.makeText(a[x][y].getContext(), "无效位置", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(a[x][y].getContext(), "无效位置", Toast.LENGTH_SHORT).show();
+                    ToastUtil.showText( a[x][y].getContext(), "无效位置");
                 }
                 try {
 
@@ -406,7 +407,8 @@ public class Tools {
                         a[x - 3][y].isDirection = StaticClass.TOP;
                     }
                 } catch (ArrayIndexOutOfBoundsException e) {
-                    Toast.makeText(a[x][y].getContext(), "无效位置", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(a[x][y].getContext(), "无效位置", Toast.LENGTH_SHORT).show();
+                    ToastUtil.showText( a[x][y].getContext(), "无效位置");
                 }
                 try {
 
@@ -417,7 +419,8 @@ public class Tools {
                         a[x][y + 3].isDirection = StaticClass.RIGHTP;
                     }
                 } catch (ArrayIndexOutOfBoundsException e) {
-                    Toast.makeText(a[x][y].getContext(), "无效位置", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(a[x][y].getContext(), "无效位置", Toast.LENGTH_SHORT).show();
+                    ToastUtil.showText( a[x][y].getContext(), "无效位置");
                 }
                 try {
                     if (!a[x][y - 3].isPlane && !a[x + 1][y - 3].isPlane && !a[x - 1][y - 3].isPlane && !a[x - 1][y - 1].isPlane && !a[x - 2][y - 1].isPlane && !a[x + 2][y - 1].isPlane && !a[x + 1][y - 1].isPlane) {
@@ -427,7 +430,8 @@ public class Tools {
                         a[x][y - 3].isDirection = StaticClass.LEFT;
                     }
                 } catch (ArrayIndexOutOfBoundsException e) {
-                    Toast.makeText(a[x][y].getContext(), "无效位置", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(a[x][y].getContext(), "无效位置", Toast.LENGTH_SHORT).show();
+                    ToastUtil.showText( a[x][y].getContext(), "无效位置");
                 }
             }
 
