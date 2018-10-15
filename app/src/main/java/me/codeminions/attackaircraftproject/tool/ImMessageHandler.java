@@ -1,10 +1,9 @@
-package me.codeminions.attackaircraftproject.until;
+package me.codeminions.attackaircraftproject.tool;
 
 import cn.bmob.newim.event.MessageEvent;
 import cn.bmob.newim.event.OfflineMessageEvent;
 import cn.bmob.newim.listener.BmobIMMessageHandler;
 import me.codeminions.attackaircraftproject.ui.DeviceLinkActivity;
-import me.codeminions.attackaircraftproject.ui.Man_ManActivity;
 
 /**
  * 创建时间：2018/10/8 23:24

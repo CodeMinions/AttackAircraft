@@ -5,7 +5,7 @@ import android.support.v7.widget.AppCompatButton;
 
 import java.io.Serializable;
 
-import me.codeminions.attackaircraftproject.until.StaticClass;
+import me.codeminions.attackaircraftproject.tool.StaticClass;
 
 /**
  * 创建时间：2018/10/3 16:26

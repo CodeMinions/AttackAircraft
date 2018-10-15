@@ -11,8 +11,7 @@ import android.widget.Button;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.codeminions.attackaircraftproject.ui.ChooseModeActivity;
-import me.codeminions.attackaircraftproject.ui.ReadyActivity;
-import me.codeminions.attackaircraftproject.until.Tools;
+import me.codeminions.attackaircraftproject.tool.Tools;
 
 /**
  * 创建时间：2018/10/3 14:02

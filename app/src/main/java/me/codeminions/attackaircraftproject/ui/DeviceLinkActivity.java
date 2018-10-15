@@ -22,8 +22,7 @@ import cn.bmob.newim.listener.MessageSendListener;
 import cn.bmob.v3.BmobInstallationManager;
 import cn.bmob.v3.exception.BmobException;
 import me.codeminions.attackaircraftproject.R;
-import me.codeminions.attackaircraftproject.TestActivity;
-import me.codeminions.attackaircraftproject.until.L;
+import me.codeminions.attackaircraftproject.tool.L;
 
 /**
  * 创建时间：2018/10/7 5:26
@@ -32,6 +31,7 @@ import me.codeminions.attackaircraftproject.until.L;
 public class DeviceLinkActivity extends BaseActivity implements View.OnClickListener {
 
     public static TextView tv_message;
+    public static String simple_Id;
     TextView et_myid;
     EditText et_connect_id;
     EditText et_receiver_id;
@@ -71,6 +71,7 @@ public class DeviceLinkActivity extends BaseActivity implements View.OnClickList
 
         info = new BmobIMUserInfo();
         et_myid.append(BmobInstallationManager.getInstallationId());
+
     }
 
     @Override
@@ -90,7 +91,6 @@ public class DeviceLinkActivity extends BaseActivity implements View.OnClickList
                 btn_start.setVisibility(View.VISIBLE);
                 break;
             case R.id.btn_start:
-
                 Intent intent = new Intent();
                 intent.putExtra("device", enemyId);
                 setResult(RESULT_OK, intent);
@@ -106,6 +106,7 @@ public class DeviceLinkActivity extends BaseActivity implements View.OnClickList
             return;
         }
         btn_connect.setClickable(false);
+        simple_Id = et_connect_id.getText().toString();
         BmobIM.connect(et_connect_id.getText().toString(), new ConnectListener() {
             @Override
             public void done(String s, BmobException e) {
@@ -139,7 +140,7 @@ public class DeviceLinkActivity extends BaseActivity implements View.OnClickList
             BmobIM.getInstance().startPrivateConversation(info, new ConversationListener() {
                 @Override
                 public void done(BmobIMConversation c, BmobException e) {
-                    if(e==null){
+                    if(e == null){
                         isOpenConversation = true;
                         //在此跳转到聊天页面或者直接转化
                         mBmobIMConversation = BmobIMConversation.obtain(BmobIMClient.getInstance(),c);

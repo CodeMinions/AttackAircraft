@@ -2,10 +2,6 @@ package me.codeminions.attackaircraftproject.application;
 
 import android.app.Application;
 import android.content.Context;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-
-import java.util.logging.Logger;
 
 import cn.bmob.newim.BmobIM;
 import cn.bmob.push.BmobPush;
@@ -14,9 +10,9 @@ import cn.bmob.v3.BmobInstallation;
 import cn.bmob.v3.BmobInstallationManager;
 import cn.bmob.v3.InstallationListener;
 import cn.bmob.v3.exception.BmobException;
-import me.codeminions.attackaircraftproject.until.ImMessageHandler;
-import me.codeminions.attackaircraftproject.until.L;
-import me.codeminions.attackaircraftproject.until.StaticClass;
+import me.codeminions.attackaircraftproject.tool.ImMessageHandler;
+import me.codeminions.attackaircraftproject.tool.L;
+import me.codeminions.attackaircraftproject.tool.StaticClass;
 
 
 /**

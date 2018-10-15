@@ -10,19 +10,17 @@ import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Set;
 
 import me.codeminions.attackaircraftproject.R;
 import me.codeminions.attackaircraftproject.application.ActivityCollector;
-import me.codeminions.attackaircraftproject.until.Location;
-import me.codeminions.attackaircraftproject.until.SerMap;
-import me.codeminions.attackaircraftproject.until.ToastUtil;
-import me.codeminions.attackaircraftproject.until.Tools;
+import me.codeminions.attackaircraftproject.tool.Location;
+import me.codeminions.attackaircraftproject.tool.SerMap;
+import me.codeminions.attackaircraftproject.tool.ToastUtil;
+import me.codeminions.attackaircraftproject.tool.Tools;
 import me.codeminions.attackaircraftproject.view.Block;
 
 /**

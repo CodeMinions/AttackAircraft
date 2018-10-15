@@ -10,9 +10,9 @@ import java.util.ArrayList;
 import java.util.Set;
 
 import me.codeminions.attackaircraftproject.R;
-import me.codeminions.attackaircraftproject.until.L;
-import me.codeminions.attackaircraftproject.until.Location;
-import me.codeminions.attackaircraftproject.until.SerMap;
+import me.codeminions.attackaircraftproject.tool.L;
+import me.codeminions.attackaircraftproject.tool.Location;
+import me.codeminions.attackaircraftproject.tool.SerMap;
 import me.codeminions.attackaircraftproject.view.Block;
 
 /**

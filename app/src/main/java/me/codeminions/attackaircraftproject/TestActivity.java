@@ -11,7 +11,7 @@ import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.PushListener;
 import me.codeminions.attackaircraftproject.ui.BaseActivity;
-import me.codeminions.attackaircraftproject.until.L;
+import me.codeminions.attackaircraftproject.tool.L;
 
 public class TestActivity extends BaseActivity {
 

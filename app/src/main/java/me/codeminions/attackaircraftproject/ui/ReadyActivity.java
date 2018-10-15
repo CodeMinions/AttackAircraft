@@ -22,11 +22,11 @@ import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.PushListener;
 import me.codeminions.attackaircraftproject.R;
-import me.codeminions.attackaircraftproject.until.L;
-import me.codeminions.attackaircraftproject.until.Location;
-import me.codeminions.attackaircraftproject.until.SerMap;
-import me.codeminions.attackaircraftproject.until.StaticClass;
-import me.codeminions.attackaircraftproject.until.Tools;
+import me.codeminions.attackaircraftproject.tool.L;
+import me.codeminions.attackaircraftproject.tool.Location;
+import me.codeminions.attackaircraftproject.tool.SerMap;
+import me.codeminions.attackaircraftproject.tool.StaticClass;
+import me.codeminions.attackaircraftproject.tool.Tools;
 import me.codeminions.attackaircraftproject.view.Block;
 
 
@@ -124,7 +124,7 @@ public class ReadyActivity extends BaseActivity implements View.OnClickListener 
 //                Toast.makeText(v.getContext(), "sanjia", Toast.LENGTH_SHORT).show();
             } else{
                 if(GAME_MODE == StaticClass.MAN){
-                    sendMessage(packMessage(plane_list));
+                    sendMessage("map" + packMessage(plane_list));
                     Man_ManActivity.actionStart(v.getContext(), new SerMap(plane_list), deviceName);
                 }else{
                     Man_MachineActivity.actionStart(v.getContext(), new SerMap(plane_list));

@@ -14,18 +14,16 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Logger;
 
-import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobInstallation;
 import cn.bmob.v3.BmobPushManager;
 import cn.bmob.v3.BmobQuery;
@@ -33,11 +31,12 @@ import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.PushListener;
 import me.codeminions.attackaircraftproject.R;
 import me.codeminions.attackaircraftproject.application.ActivityCollector;
-import me.codeminions.attackaircraftproject.until.L;
-import me.codeminions.attackaircraftproject.until.Location;
-import me.codeminions.attackaircraftproject.until.SerMap;
-import me.codeminions.attackaircraftproject.until.ToastUtil;
-import me.codeminions.attackaircraftproject.until.Tools;
+import me.codeminions.attackaircraftproject.tool.L;
+import me.codeminions.attackaircraftproject.tool.Location;
+import me.codeminions.attackaircraftproject.tool.MyPushMessageReceiver;
+import me.codeminions.attackaircraftproject.tool.SerMap;
+import me.codeminions.attackaircraftproject.tool.ToastUtil;
+import me.codeminions.attackaircraftproject.tool.Tools;
 import me.codeminions.attackaircraftproject.view.Block;
 
 /**
@@ -47,6 +46,7 @@ import me.codeminions.attackaircraftproject.view.Block;
 
 public class Man_ManActivity extends BaseActivity implements View.OnClickListener, View.OnLongClickListener {
     boolean isFirst = true;
+    public static boolean isInit = false;
 
     int count;
     //记录击中数
@@ -58,7 +58,8 @@ public class Man_ManActivity extends BaseActivity implements View.OnClickListene
     List<ArrayList<Location>> plane_list;
     HashMap<Location, ArrayList<Location>> my_plane_list;
 
-    FrameLayout kaiguan;
+    TextView kaiguan;
+
     LinearLayout linear;
     LinearLayout linear_s;
 
@@ -79,6 +80,10 @@ public class Man_ManActivity extends BaseActivity implements View.OnClickListene
     //保存Bmob的值用于判断Bmob更新
     String old_BmobData;
 
+
+    public static MyHandler handler;
+
+
 // FIXME: 2018/10/8 设置更新标记
     public static String be_Boom_loc;
 
@@ -89,29 +94,6 @@ public class Man_ManActivity extends BaseActivity implements View.OnClickListene
 
         context.startActivity(intent);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -128,13 +110,14 @@ public class Man_ManActivity extends BaseActivity implements View.OnClickListene
         plane_list = new ArrayList<>();
         Top_Set = new ArrayList<>();
 
-        L.i("刚进来的data  " + BmobData);
+//        L.i("刚进来的data  " + BmobData);
 //        old_BmobData = BmobData;
 
 //        sendMessage(packMessage(my_plane_list));
 
+        handler = new MyHandler();
         init();
-
+        isInit = true;
         //linear_s后初始化，以上操作执行后，matrix数组中保存的是linear_s中的对象
 
         //将自己的地图显示到屏幕,key为所有我的机头的集合
@@ -148,10 +131,10 @@ public class Man_ManActivity extends BaseActivity implements View.OnClickListene
                 while (true) {
                     if (BmobData != null) {
                         handler.sendEmptyMessage(1);
-                        old_BmobData = BmobData;
+//                        old_BmobData = BmobData;
 
                         L.i("地图加载完毕...");
-                        t.start();
+//                        t.start();
                         break;
                     }
                 }
@@ -159,27 +142,28 @@ public class Man_ManActivity extends BaseActivity implements View.OnClickListene
             }
         }).start();
 
-
     }
 
-    Thread t = new Thread(new Runnable() {
-        @Override
-        public void run() {
-            L.w("线程启动...");
-            L.i("newdata " + BmobData);
-            L.i("olddata " + old_BmobData);
-            while (true) {
-//                 if (!isFirst) {
-                    if (!BmobData.equals(old_BmobData)) {
-                        L.w("Bmob已更新...");
-                        handler.sendEmptyMessage(4);
-                        break;
-//                    }
-                }
-            }
-            L.w("线程关闭...");
-        }
-    });
+
+    //死循环被kill
+//    Thread t = new Thread(new Runnable() {
+//        @Override
+//        public void run() {
+//            L.w("线程启动...");
+//            L.i("newdata " + BmobData);
+//            L.i("olddata " + old_BmobData);
+//            while (true) {
+////                 if (!isFirst) {
+//                    if (!BmobData.equals(old_BmobData)) {
+//                        L.w("Bmob已更新...");
+//                        handler.sendEmptyMessage(4);
+//                        break;
+////                    }
+//                }
+//            }
+//            L.w("线程关闭...");
+//        }
+//    });
 
 
 //        new Thread(new Runnable() {
@@ -194,7 +178,7 @@ public class Man_ManActivity extends BaseActivity implements View.OnClickListene
 //                            //发送null表示收到
 //                            if (BmobData == "ok") {
 //                                //在这里取消所有按钮点击
-//
+
 //                                handler.sendEmptyMessage(2);
 //                            } else {
 //                                handler.sendEmptyMessage(3);
@@ -209,12 +193,10 @@ public class Man_ManActivity extends BaseActivity implements View.OnClickListene
 
 
 
-
-    @SuppressLint("HandlerLeak")
-    Handler handler = new Handler(){
+    public class MyHandler extends Handler {
         @Override
         public void handleMessage(Message msg) {
-            switch(msg.what){
+            switch(msg.what) {
                 case 1:
                     parseJson(BmobData);
                     setEnemyPlane();
@@ -226,10 +208,52 @@ public class Man_ManActivity extends BaseActivity implements View.OnClickListene
                     L.i("newdata " + BmobData);
                     L.i("olddata " + old_BmobData);
                     Location l = gson.fromJson(BmobData, Location.class);
+                    L.e("攻击了" + l.getLocation());
                     enemyAttach(l);
-                    old_BmobData = BmobData;
-                    t.start();
+
+                    kaiguan.setVisibility(View.GONE);
+                    setButton(true);
                     break;
+                case 5:
+                    L.e("更新UI。。。");
+                    break;
+            }
+        }
+    }
+
+    private void setButton(Boolean key){
+        for(int i = 0; i < 10; i++){
+
+            for(int j = 0; j < 10; j++){
+                if(!matrix[i][j].isBoom) {
+                    matrix[i][j].setEnabled(key);
+                }
+            }
+        }
+    }
+
+
+//    @SuppressLint("HandlerLeak")
+//    public Handler handler = new Handler(){
+//        @Override
+//        public void handleMessage(Message msg) {
+//            switch(msg.what){
+//                case 1:
+//                    parseJson(BmobData);
+//                    setEnemyPlane();
+//
+//                    break;
+//
+//                case 4:
+//                    Gson gson = new Gson();
+//                    L.i("newdata " + BmobData);
+//                    L.i("olddata " + old_BmobData);
+//                    Location l = gson.fromJson(BmobData, Location.class);
+//                    enemyAttach(l);
+//                    old_BmobData = BmobData;
+//                    t.start();
+//                    break;
+
 //                case 2:
 //                    kaiguan.setVisibility(View.VISIBLE);
 //                    break;
@@ -241,13 +265,12 @@ public class Man_ManActivity extends BaseActivity implements View.OnClickListene
 //                    old_BmobData = BmobData;
 //                    sendPMessage("ok");
 //                    break;
-            }
-        }
-    };
+//            }
+//        }
+//    };
 
     private void sendPMessage(final String msg){
 
-        //TODO 替换成所需要推送的Android客户端installationId
         BmobPushManager bmobPushManager = new BmobPushManager();
         BmobQuery<BmobInstallation> query = BmobInstallation.getQuery();
         String installationId = enemyId;
@@ -291,7 +314,7 @@ public class Man_ManActivity extends BaseActivity implements View.OnClickListene
             for(Location l :p_l){
                 matrix[l.x][l.y].isPlane = true;
                 // FIXME: 2018/10/9 不显示
-                matrix[l.x][l.y].setBackgroundResource(R.drawable.select_block);
+//                matrix[l.x][l.y].setBackgroundResource(R.drawable.select_block);
             }
         }
     }
@@ -328,7 +351,7 @@ public class Man_ManActivity extends BaseActivity implements View.OnClickListene
         matrix_s = new Block[10][10];
 
         textBroad = (TextView) findViewById(R.id.textBroad);
-        kaiguan = (FrameLayout) findViewById(R.id.kaiguan);
+        kaiguan = (TextView) findViewById(R.id.kaiguan);
 
         linear = (LinearLayout) findViewById(R.id.map);
         linear_s = (LinearLayout) findViewById(R.id.small_map);
@@ -402,6 +425,8 @@ public class Man_ManActivity extends BaseActivity implements View.OnClickListene
             if(matrix[x][y].isPlane){
                 if(matrix[((Block) v).getLine()][((Block) v).getList()].isTop) {
                     v.setBackgroundResource(R.drawable.block_boom);
+                    v.setEnabled(false);
+                    L.i("不能点...");
 
                     matrix[((Block) v).getLine()][((Block) v).getList()].isBoom = true;
                     if(Top_Set.get(0).isBoom && Top_Set.get(1).isBoom && Top_Set.get(2).isBoom){
@@ -422,7 +447,10 @@ public class Man_ManActivity extends BaseActivity implements View.OnClickListene
 
         //给对方发送数据，我点击的坐标
         String json = new Gson().toJson(new Location(x, y));
-        sendPMessage(json);
+        sendPMessage("loc" + DeviceLinkActivity.simple_Id + "#" + json);
+
+        kaiguan.setVisibility(View.VISIBLE);
+        setButton(false);
 
         isFirst = false;
     }
