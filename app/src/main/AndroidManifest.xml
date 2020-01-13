@@ -22,6 +22,10 @@
     <!--<uses-permission android:name="android.permission.BLUETOOTH" />-->
     <!--<uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />-->
 
+    <!--推送所需的权限-->
+    <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
 
 
     <application
@@ -56,9 +60,11 @@
             android:label="人机对战模式界面"
             android:theme="@style/NoActivityFullscreen" />
         <activity android:name=".ui.Man_ManActivity"
-            android:label="双人对战模式界面"/>
+            android:label="双人对战模式界面"
+            android:theme="@style/NoActivityFullscreen"/>
 
-        <activity android:name=".TextActivity"/>
+        <activity android:name=".TextActivity"
+            android:label="游戏说明"/>
 
         <activity android:name=".ui.ChooseModeActivity"
             android:label="选择对战模式"/>
@@ -66,24 +72,56 @@
         <activity android:name=".ui.DeviceLinkActivity"
             android:label="选择设备"/>
 
+        <activity android:name=".TestActivity"
+            android:label="测试专用"/>
+
 
         <!--TODO 集成：1.2、添加推送所需要的服务和广播-->
-        <receiver android:name="cn.bmob.newim.core.ConnectChangeReceiver">
+        <service
+            android:label="PushService"
+            android:name="cn.bmob.push.lib.service.PushService"
+            android:process=":bmobpush"
+            android:exported="true">
             <intent-filter>
-                <action android:name="cn.bmob.action.RECONNECT" />
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="cn.bmob.push.lib.service.PushService"/>
+            </intent-filter>
+        </service>
+
+        <!-- 用于进程保活 -->
+        <service
+            android:name="cn.bmob.push.lib.service.PushNotifyService"
+            android:process=":bmobpush" >
+        </service>
+
+        <receiver android:name="cn.bmob.push.PushReceiver" >
+            <intent-filter>
+                <!-- 系统启动完成后会调用 -->
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <!-- 解锁完成后会调用 -->
                 <action android:name="android.intent.action.USER_PRESENT" />
+                <!-- 监听网络连通性 -->
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
-        <service
-            android:name="cn.bmob.newim.core.service.BmobIMService"
-            android:process=":bmobcore" />
-        <service
-            android:name="cn.bmob.newim.core.service.NotifyService"
-            android:process=":bmobcore" />
-        <service android:name="cn.bmob.newim.core.service.ReConnectService" />
-        <service android:name="cn.bmob.newim.core.service.HeartBeatService" />
+
+        <!-- 第3步中创建的消息接收器，在这里进行注册 -->
+        <receiver android:name="me.codeminions.attackaircraftproject.tool.MyPushMessageReceiver">
+            <intent-filter >
+                <action android:name="cn.bmob.push.action.MESSAGE"/>
+            </intent-filter>
+        </receiver>
+
+        <!-- 接收心跳和唤醒的广播，要和PushService运行在同个进程 -->
+        <receiver
+            android:name="cn.bmob.push.PushNotifyReceiver"
+            android:process=":bmobpush" >
+            <intent-filter>
+                <!-- 接收心跳广播的action -->
+                <action android:name="cn.bmob.push.action.HEARTBEAT" />
+                <!-- 接收唤醒广播的action -->
+                <action android:name="cn.bmob.push.action.NOTIFY" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

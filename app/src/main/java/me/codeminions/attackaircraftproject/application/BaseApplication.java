@@ -2,13 +2,17 @@ package me.codeminions.attackaircraftproject.application;
 
 import android.app.Application;
 import android.content.Context;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 
 import cn.bmob.newim.BmobIM;
+import cn.bmob.push.BmobPush;
 import cn.bmob.v3.Bmob;
-import me.codeminions.attackaircraftproject.ui.ImMessageHandler;
-import me.codeminions.attackaircraftproject.until.StaticClass;
+import cn.bmob.v3.BmobInstallation;
+import cn.bmob.v3.BmobInstallationManager;
+import cn.bmob.v3.InstallationListener;
+import cn.bmob.v3.exception.BmobException;
+import me.codeminions.attackaircraftproject.tool.ImMessageHandler;
+import me.codeminions.attackaircraftproject.tool.L;
+import me.codeminions.attackaircraftproject.tool.StaticClass;
 
 
 /**
@@ -23,9 +27,30 @@ public class BaseApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
+        /**
+         * 初始化比目数据SDK
+         */
+
+        //TODO 集成：1.4、初始化数据服务SDK、初始化设备信息并启动推送服务
+        // 初始化BmobSDK
         Bmob.initialize(this, StaticClass.BMOB_ID);
+
         BmobIM.init(this);
         BmobIM.registerDefaultMessageHandler(new ImMessageHandler());
+
+        // 使用推送服务时的初始化操作
+        BmobInstallationManager.getInstance().initialize(new InstallationListener<BmobInstallation>() {
+            @Override
+            public void done(BmobInstallation bmobInstallation, BmobException e) {
+                if (e == null) {
+                    L.i(bmobInstallation.getObjectId() + "-" + bmobInstallation.getInstallationId());
+                } else {
+                    L.e(e.getMessage());
+                }
+            }
+        });
+// 启动推送服务
+        BmobPush.startWork(this);
     }
 
     public static Context getContext() {

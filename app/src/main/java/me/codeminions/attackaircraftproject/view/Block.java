@@ -5,7 +5,7 @@ import android.support.v7.widget.AppCompatButton;
 
 import java.io.Serializable;
 
-import me.codeminions.attackaircraftproject.until.StaticClass;
+import me.codeminions.attackaircraftproject.tool.StaticClass;
 
 /**
  * 创建时间：2018/10/3 16:26
@@ -25,6 +25,8 @@ public class Block extends AppCompatButton implements Serializable{
     public boolean isFalse = false;
     ////标记为被选中
     public boolean isSelect = false;
+    //标记为已爆炸
+    public boolean isBoom = false;
 
 
     public int getLine() {

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -7,6 +7,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:background="#e6e6e6"
     tools:context=".ui.Man_MachineActivity">
+
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -22,7 +23,7 @@
             android:text="Attack His Plane Top"
             android:layout_above="@id/my_draft"
             android:layout_toLeftOf="@id/small_wai"
-            android:textSize="35sp"
+            android:textSize="32sp"
             android:typeface="serif"
             android:textColor="#F97213"
             android:layout_marginEnd="7dp"
@@ -86,6 +87,18 @@
     </RelativeLayout>
 
 
+    <!--android:background="@android:color/transparent"-->
+    <TextView
+        android:text="请等候对方攻击..."
+        android:gravity="center"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:id="@+id/kaiguan"
+        android:visibility="visible"
+        android:background="@drawable/bmob_update_button_ok_bg_tap"
+        android:layout_width="150dp"
+        android:layout_height="40dp"/>
 
 
-</LinearLayout>
+</RelativeLayout>

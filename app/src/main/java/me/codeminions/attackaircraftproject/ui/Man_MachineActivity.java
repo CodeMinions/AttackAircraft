@@ -10,7 +10,6 @@ import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,9 +17,10 @@ import java.util.Set;
 
 import me.codeminions.attackaircraftproject.R;
 import me.codeminions.attackaircraftproject.application.ActivityCollector;
-import me.codeminions.attackaircraftproject.until.Location;
-import me.codeminions.attackaircraftproject.until.SerMap;
-import me.codeminions.attackaircraftproject.until.Tools;
+import me.codeminions.attackaircraftproject.tool.Location;
+import me.codeminions.attackaircraftproject.tool.SerMap;
+import me.codeminions.attackaircraftproject.tool.ToastUtil;
+import me.codeminions.attackaircraftproject.tool.Tools;
 import me.codeminions.attackaircraftproject.view.Block;
 
 /**
@@ -52,6 +52,7 @@ public class Man_MachineActivity extends BaseActivity implements View.OnClickLis
     Block[][] matrix;
     Block[][] matrix_s;
 
+    ArrayList<Block> Top_Set;
 
     public static void actionStart(Context context, SerMap map){
         Intent intent = new Intent(context, Man_MachineActivity.class);
@@ -69,6 +70,7 @@ public class Man_MachineActivity extends BaseActivity implements View.OnClickLis
         //传入我的地图，想在linear_s中显示出来
         my_plane_list = ((SerMap) getIntent().getSerializableExtra("map")).map;
         plane_list = new HashMap<>();
+        Top_Set = new ArrayList<>();
         init();
 
         //linear_s后初始化，以上操作执行后，matrix数组中保存的是linear_s中的对象
@@ -90,6 +92,9 @@ public class Man_MachineActivity extends BaseActivity implements View.OnClickLis
             if(plane_l.size() != 0) {
                 plane_list.put(plane_l.get(0), plane_l);
                 matrix[plane_l.get(0).x][plane_l.get(0).y].isTop = true;
+
+                Top_Set.add(matrix[plane_l.get(0).x][plane_l.get(0).y]);
+
                 for (Location t : plane_l) {
 
                     matrix[t.x][t.y].isPlane = true;
@@ -184,14 +189,16 @@ public class Man_MachineActivity extends BaseActivity implements View.OnClickLis
             if(!((Block) v).isSelect){
                 ((Block) v).setBackgroundResource(R.drawable.select_block);
                 ((Block) v).isSelect = true;
-                Toast.makeText(v.getContext(), "(" + String.valueOf(((Block) v).getLine()) + "," + String.valueOf(((Block) v).getList()) + ")", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(v.getContext(), "(" + String.valueOf(((Block) v).getLine()) + "," + String.valueOf(((Block) v).getList()) + ")", Toast.LENGTH_SHORT).show();
+                ToastUtil.showText(v.getContext(), "(" + String.valueOf(((Block) v).getLine()) + "," + String.valueOf(((Block) v).getList()) + ")");
                 inform.append("(" + String.valueOf(((Block) v).getLine()) + "," + String.valueOf(((Block) v).getList()) + ")" );
 
                 if(matrix[((Block) v).getLine()][((Block) v).getList()].isPlane){
                     if(matrix[((Block) v).getLine()][((Block) v).getList()].isTop) {
                         v.setBackgroundResource(R.drawable.block_boom);
-                        boom_Count++;
-                        if(boom_Count == 3){
+
+                        matrix[((Block) v).getLine()][((Block) v).getList()].isBoom = true;
+                        if(Top_Set.get(0).isBoom && Top_Set.get(1).isBoom && Top_Set.get(2).isBoom){
                             setDialog("You Win...", null);
                         }
                     }

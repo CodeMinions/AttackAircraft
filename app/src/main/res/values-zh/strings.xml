@@ -1,4 +1,22 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">打爆飞机</string>
+    <string name="img_descr_1">飞机形状示意</string>
+    <string name="img_descr_2">对战画面示意</string>
+    <string name="game_text_1">轮流点击，直到击爆敌方飞机机头！！！斗智斗勇，险象迭生！！！看谁能在枪林弹雨擒得敌首！！！</string>
+    <string name="game_text_2">在各自的坐标轴中任意摆放飞机（不可重叠）。飞机形状如下。点击方格选择机头，再点一次取消机头。确定机头后再通过四个引导箭头选择飞机摆向。\n</string>
+    <string name="game_text_3">游戏界面中，在下方的坐标轴中，点击方格，通过左上角的信息推测敌机摆放，击爆飞机头，则方格为红，长按方格则方格变黑（可用于标记方格），再长按复原。右上角为我方地图。红黑色方格为对方点击的坐标，红色为集中飞机的坐标。</string>
+    <string name="game_text_title">\n双人联机模式介绍</string>
+    <string name="game_text_4">进入联机页面后，输入自定义的本服务器id与接收者id。另一设备则填写相应的接收者id与服务器id。如下图所示....\n</string>
+    <string name="game_text_5">确认填写无误后点击连接。连接成功后即可开始对话，并点击按钮将设备id发送对方。点击开始游戏，结束会话开始游戏</string>
+    <string name="game_text_6">注 : \n1.为保证设备id接受无误，最好在收到对方至少一句会话后再点击发送id\n   2.发送id以后则无法再继续会话</string>
+
+    <string name="btn_start1">Game Start</string>
+    <string name="btn_start2">开始游戏</string>
+    <string name="btn_sendId">发送本机ID</string>
+    <string name="btn_sendMsg">发送消息</string>
+    <string name="btn_startLink">开始连接</string>
+    <string name="hint_receive">接受者的Id</string>
+    <string name="hint_server">连接服务器的id</string>
+    <string name="txt_device">本设备id : </string>
+
 </resources>

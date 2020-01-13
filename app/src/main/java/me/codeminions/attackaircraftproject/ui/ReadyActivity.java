@@ -9,16 +9,24 @@ import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 
-import cn.bmob.newim.bean.BmobIMUserInfo;
+import cn.bmob.v3.BmobInstallation;
+import cn.bmob.v3.BmobPushManager;
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.PushListener;
 import me.codeminions.attackaircraftproject.R;
-import me.codeminions.attackaircraftproject.until.Location;
-import me.codeminions.attackaircraftproject.until.SerMap;
-import me.codeminions.attackaircraftproject.until.StaticClass;
-import me.codeminions.attackaircraftproject.until.Tools;
+import me.codeminions.attackaircraftproject.tool.L;
+import me.codeminions.attackaircraftproject.tool.Location;
+import me.codeminions.attackaircraftproject.tool.SerMap;
+import me.codeminions.attackaircraftproject.tool.StaticClass;
+import me.codeminions.attackaircraftproject.tool.Tools;
 import me.codeminions.attackaircraftproject.view.Block;
 
 
@@ -45,7 +53,7 @@ public class ReadyActivity extends BaseActivity implements View.OnClickListener 
     public static void actionStart(Context context, @Nullable String info){
         Intent intent = new Intent(context, ReadyActivity.class);
         if(info != null) {
-            intent.putExtra("Device", info);
+            intent.putExtra("device", info);
         }
         context.startActivity(intent);
     }
@@ -54,8 +62,8 @@ public class ReadyActivity extends BaseActivity implements View.OnClickListener 
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ready);
-        if(getIntent() != null){
-            deviceName = getIntent().getStringExtra("Device");
+        if(getIntent().getStringExtra("device") != null){
+            deviceName = getIntent().getStringExtra("device");
             GAME_MODE = StaticClass.MAN;
         }else {
             GAME_MODE = StaticClass.MACHINE;
@@ -116,6 +124,7 @@ public class ReadyActivity extends BaseActivity implements View.OnClickListener 
 //                Toast.makeText(v.getContext(), "sanjia", Toast.LENGTH_SHORT).show();
             } else{
                 if(GAME_MODE == StaticClass.MAN){
+                    sendMessage("map" + packMessage(plane_list));
                     Man_ManActivity.actionStart(v.getContext(), new SerMap(plane_list), deviceName);
                 }else{
                     Man_MachineActivity.actionStart(v.getContext(), new SerMap(plane_list));
@@ -178,5 +187,39 @@ public class ReadyActivity extends BaseActivity implements View.OnClickListener 
 
         return false;
     }
+
+
+    private void sendMessage(String msg){
+
+        //TODO 替换成所需要推送的Android客户端installationId
+        BmobPushManager bmobPushManager = new BmobPushManager();
+        BmobQuery<BmobInstallation> query = BmobInstallation.getQuery();
+        String installationId = deviceName;
+        query.addWhereEqualTo("installationId", installationId);
+        bmobPushManager.setQuery(query);
+        bmobPushManager.pushMessage(msg, new PushListener() {
+            @Override
+            public void done(BmobException e) {
+                if (e == null) {
+                    L.e("推送成功！");
+                } else {
+                    L.e("异常：" + e.getMessage());
+                }
+            }
+        });
+    }
+
+    private String packMessage(HashMap<Location, ArrayList<Location>> my_plane_list){
+        Set<Location> key = my_plane_list.keySet();
+        List<ArrayList<Location>> l = new ArrayList<>();
+
+        for(Location k: key){
+            plane_l = my_plane_list.get(k);
+            l.add(plane_l);
+        }
+        String data =  new Gson().toJson(l);
+        return data;
+    }
+
 
 }
