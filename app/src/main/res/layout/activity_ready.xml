@@ -7,6 +7,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.ReadyActivity">
 
+    <TextView
+        android:id="@+id/link_id"
+        android:text="@string/txt_id"
+        android:textSize="18sp"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
     <Button
         android:text="@string/btn_start1"
         android:textColor="#ffffff"

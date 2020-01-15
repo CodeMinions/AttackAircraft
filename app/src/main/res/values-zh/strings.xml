@@ -12,6 +12,8 @@
 
     <string name="btn_start1">Game Start</string>
     <string name="btn_start2">开始游戏</string>
+    <string name="txt_id">当前连接设备：</string>
+
     <string name="btn_sendId">发送本机ID</string>
     <string name="btn_sendMsg">发送消息</string>
     <string name="btn_startLink">开始连接</string>
@@ -19,4 +21,12 @@
     <string name="hint_server">连接服务器的id</string>
     <string name="txt_device">本设备id : </string>
 
+    <string name="mode_two">双人对战</string>
+    <string name="mode_one">人机对战</string>
+
+    <string name="logo1">𝕬𝖙𝖙𝖆𝖈𝖐\n\t\t\t\t\t\t\t\t\t\t𝕿𝖍𝖊\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t𝕻𝖑𝖆𝖓𝖊</string>
+    <string name="logo2">打爆飞机</string>
+
+    <string name="main_text">游戏说明</string>
+    <string name="main_out">退出游戏</string>
 </resources>

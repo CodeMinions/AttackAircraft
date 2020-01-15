@@ -23,6 +23,7 @@ import cn.bmob.v3.BmobInstallationManager;
 import cn.bmob.v3.exception.BmobException;
 import me.codeminions.attackaircraftproject.R;
 import me.codeminions.attackaircraftproject.tool.L;
+import me.codeminions.attackaircraftproject.tool.ToastUtil;
 
 /**
  * 创建时间：2018/10/7 5:26
@@ -75,6 +76,14 @@ public class DeviceLinkActivity extends BaseActivity implements View.OnClickList
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Intent intent = new Intent();
+        intent.putExtra("device", enemyId);
+        setResult(RESULT_CANCELED, intent);
+    }
+
+    @Override
     public void onClick(View v) {
 
         switch (v.getId()){
@@ -105,7 +114,7 @@ public class DeviceLinkActivity extends BaseActivity implements View.OnClickList
             Toast.makeText(this, "请填写连接id", Toast.LENGTH_SHORT).show();
             return;
         }
-        btn_connect.setClickable(false);
+
         simple_Id = et_connect_id.getText().toString();
         BmobIM.connect(et_connect_id.getText().toString(), new ConnectListener() {
             @Override
@@ -113,9 +122,10 @@ public class DeviceLinkActivity extends BaseActivity implements View.OnClickList
                 if (e == null){
                     isConnect = true;
                     L.i("服务器连接成功");
+                    btn_connect.setClickable(false);
 
-                    Toast.makeText(DeviceLinkActivity.this, "服务器连接成功", Toast.LENGTH_SHORT).show();
-                    Toast.makeText(DeviceLinkActivity.this, "可通过发送会话确认", Toast.LENGTH_SHORT).show();
+                    ToastUtil.showText(DeviceLinkActivity.this, "服务器连接成功");
+                    ToastUtil.showText(DeviceLinkActivity.this, "可通过发送会话确认");
 
                     btn_sendId.setVisibility(View.VISIBLE);
                 }else {

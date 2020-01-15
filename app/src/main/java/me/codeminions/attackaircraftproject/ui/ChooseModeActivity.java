@@ -10,6 +10,7 @@ import android.widget.RadioButton;
 import android.widget.Toast;
 
 import me.codeminions.attackaircraftproject.R;
+import me.codeminions.attackaircraftproject.tool.ToastUtil;
 
 /**
  * 创建时间：2018/10/7 5:16
@@ -66,7 +67,17 @@ public class ChooseModeActivity extends BaseActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        info = data.getStringExtra("device");
-        button1.setChecked(true);
+        switch (requestCode) {
+            case 1:
+                if(resultCode == RESULT_OK) {
+                    info = data.getStringExtra("device");
+                    button1.setChecked(true);
+                } else if(resultCode == RESULT_CANCELED){
+                    button1.setChecked(false);
+                    ToastUtil.showText(this, "未获取设备");
+                }
+
+                break;
+        }
     }
 }

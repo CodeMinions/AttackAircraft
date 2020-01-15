@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 
@@ -16,17 +17,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
-import cn.bmob.v3.BmobInstallation;
-import cn.bmob.v3.BmobPushManager;
-import cn.bmob.v3.BmobQuery;
-import cn.bmob.v3.exception.BmobException;
-import cn.bmob.v3.listener.PushListener;
 import me.codeminions.attackaircraftproject.R;
-import me.codeminions.attackaircraftproject.tool.L;
 import me.codeminions.attackaircraftproject.tool.Location;
+import me.codeminions.attackaircraftproject.tool.MapTools;
 import me.codeminions.attackaircraftproject.tool.SerMap;
 import me.codeminions.attackaircraftproject.tool.StaticClass;
-import me.codeminions.attackaircraftproject.tool.Tools;
+import me.codeminions.attackaircraftproject.tool.UtilTools;
 import me.codeminions.attackaircraftproject.view.Block;
 
 
@@ -37,6 +33,8 @@ import me.codeminions.attackaircraftproject.view.Block;
 public class ReadyActivity extends BaseActivity implements View.OnClickListener ,View.OnLongClickListener{
 
     LinearLayout linear;
+
+    TextView text_id;
 
     HashMap<Location, ArrayList<Location>> plane_list;
 
@@ -62,6 +60,8 @@ public class ReadyActivity extends BaseActivity implements View.OnClickListener 
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ready);
+
+        //连接不成功直接进入人机模式
         if(getIntent().getStringExtra("device") != null){
             deviceName = getIntent().getStringExtra("device");
             GAME_MODE = StaticClass.MAN;
@@ -69,14 +69,13 @@ public class ReadyActivity extends BaseActivity implements View.OnClickListener 
             GAME_MODE = StaticClass.MACHINE;
         }
 
-
         findViewById(R.id.id_start).setOnClickListener(this);
         plane_list = new HashMap<>();
 
+        text_id = (TextView) findViewById(R.id.link_id);
         linear = (LinearLayout) findViewById(R.id.map);
 
         initView();
-
     }
 
     /**
@@ -84,6 +83,11 @@ public class ReadyActivity extends BaseActivity implements View.OnClickListener 
     **/
     // FIXME: 2018/10/4 由于要通过迭代给每个方块赋值，所以无法将这段代码抽象出来复用。。
     private void initView(){
+
+        if(GAME_MODE == StaticClass.MAN) {
+            text_id.setVisibility(View.VISIBLE);
+            text_id.append(" " + deviceName);
+        }
         for(int i = 0; i < 10; i++){
             LinearLayout line = new LinearLayout(this);
             line.setId(i);
@@ -114,17 +118,11 @@ public class ReadyActivity extends BaseActivity implements View.OnClickListener 
          **/
         if(v.getId() == R.id.id_start) {
             if(plane_list.size() != 3){
-                AlertDialog.Builder dialog = Tools.setDialog(this, "请选择飞机（至少3架）...", null);
-                dialog.setCancelable(true);
-                dialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {}
-                        });
-                dialog.show();
-//                Toast.makeText(v.getContext(), "sanjia", Toast.LENGTH_SHORT).show();
+                setDialog("请选择飞机（至少3架）...", null);
+
             } else{
                 if(GAME_MODE == StaticClass.MAN){
-                    sendMessage("map" + packMessage(plane_list));
+                    UtilTools.sendMessage(deviceName, "map" + packMessage(plane_list));
                     Man_ManActivity.actionStart(v.getContext(), new SerMap(plane_list), deviceName);
                 }else{
                     Man_MachineActivity.actionStart(v.getContext(), new SerMap(plane_list));
@@ -132,18 +130,13 @@ public class ReadyActivity extends BaseActivity implements View.OnClickListener 
                 finish();
             }
         }else {
-
             int x = ((Block) v).getLine();
             int y = ((Block) v).getList();
 
-            plane_l = Tools.getPlaneBody(new Location(x, y), a, ((Block) v).isDirection);
+            plane_l = MapTools.getPlaneBody(new Location(x, y), a, ((Block) v).isDirection);
             if (plane_l.size() != 0)
                 plane_list.put(plane_l.get(0), plane_l);
 
-            switch (v.getId()) {
-                case R.id.id_block:
-                    break;
-            }
         }
     }
 
@@ -188,26 +181,18 @@ public class ReadyActivity extends BaseActivity implements View.OnClickListener 
         return false;
     }
 
-
-    private void sendMessage(String msg){
-
-        //TODO 替换成所需要推送的Android客户端installationId
-        BmobPushManager bmobPushManager = new BmobPushManager();
-        BmobQuery<BmobInstallation> query = BmobInstallation.getQuery();
-        String installationId = deviceName;
-        query.addWhereEqualTo("installationId", installationId);
-        bmobPushManager.setQuery(query);
-        bmobPushManager.pushMessage(msg, new PushListener() {
+    private void setDialog(String inform , String msg){
+        AlertDialog.Builder dialog = UtilTools.setDialog(this, inform, msg);
+        dialog.setCancelable(true);
+        dialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
-            public void done(BmobException e) {
-                if (e == null) {
-                    L.e("推送成功！");
-                } else {
-                    L.e("异常：" + e.getMessage());
-                }
-            }
+            public void onClick(DialogInterface dialog, int which) {}
         });
+        dialog.show();
     }
+
+
+
 
     private String packMessage(HashMap<Location, ArrayList<Location>> my_plane_list){
         Set<Location> key = my_plane_list.keySet();
