@@ -12,8 +12,8 @@ public class ToolsTest {
         Location a;
         int b;
         while(i < 30){
-            a = Tools.RandomLocation();
-            b = Tools.RandomLDirection();
+            a = MapTools.RandomLocation();
+            b = MapTools.RandomLDirection();
             System.out.println(a.x + "  " + a.y + "         " + b);
 
             i++;

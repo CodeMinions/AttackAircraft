@@ -5,7 +5,7 @@ import java.io.Serializable;
 
 /**
  * 创建时间：2018/10/4 0:00
- * 描述：TODO
+ * 描述：坐标类
  */
 public class Location  implements Serializable {
     public int x;

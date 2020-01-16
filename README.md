@@ -9,12 +9,15 @@
 
 #### 安装教程
 
+1. xxxx
+2. xxxx
+3. xxxx
+
 #### 使用说明
-<div align=center>
- <img src="./Img/主界面示例.jpg" width = "250" alt="效果图" align=left />
- <img src="./Img/准备界面示例.jpg" width = "250" alt="效果图" align=center />
- <img src="./Img/对战界面示例.jpg" width = "250" alt="效果图" align=right />
-</div>
+
+1. xxxx
+2. xxxx
+3. xxxx
 
 #### 参与贡献
 

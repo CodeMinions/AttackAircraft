@@ -9,10 +9,20 @@
     tools:context=".ui.Man_MachineActivity">
 
 
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/back3">
+
+        <TextView
+            android:id="@+id/link_id"
+            android:text="@string/txt_id"
+            android:textSize="18sp"
+            android:visibility="gone"
+            android:layout_alignParentTop="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         <TextView
             android:id="@+id/textBroad"
@@ -75,30 +85,19 @@
 
         </RelativeLayout>
 
-        <!--<Button-->
-            <!--android:text="作弊"-->
-            <!--android:id="@+id/no_btn"-->
-            <!--style="?android:attr/borderlessButtonStyle"-->
-            <!--android:layout_above="@id/my_draft"-->
-            <!--android:layout_centerInParent="true"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content" />-->
-
     </RelativeLayout>
 
 
     <!--android:background="@android:color/transparent"-->
     <TextView
-        android:text="请等候对方攻击..."
         android:gravity="center"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:id="@+id/kaiguan"
-        android:visibility="visible"
+        android:visibility="gone"
         android:background="@drawable/bmob_update_button_ok_bg_tap"
         android:layout_width="150dp"
         android:layout_height="40dp"/>
-
 
 </RelativeLayout>

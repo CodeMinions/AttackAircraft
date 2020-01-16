@@ -13,7 +13,7 @@ import java.util.HashMap;
 public class SerMap implements Serializable {
     public HashMap<Location, ArrayList<Location>> map;
 
-    public SerMap(HashMap<Location, ArrayList<Location>> map){
+    public SerMap(HashMap<Location, ArrayList<Location>> map) {
         this.map = map;
     }
 
@@ -21,13 +21,4 @@ public class SerMap implements Serializable {
         return map;
     }
 
-//    public Block[][] getMap_b() {
-//        return map_b;
-//    }
-//
-//    public SerMap(HashMap<Location, ArrayList<Location>> map, Block[][] map_b) {
-//
-//        this.map = map;
-//        this.map_b = map_b;
-//    }
 }

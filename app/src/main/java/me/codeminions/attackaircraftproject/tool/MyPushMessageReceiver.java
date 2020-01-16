@@ -11,6 +11,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import cn.bmob.push.PushConstants;
+import me.codeminions.attackaircraftproject.application.BaseApplication;
 import me.codeminions.attackaircraftproject.ui.BaseActivity;
 import me.codeminions.attackaircraftproject.ui.DeviceLinkActivity;
 import me.codeminions.attackaircraftproject.ui.Man_ManActivity;
@@ -50,17 +51,20 @@ public class MyPushMessageReceiver extends BroadcastReceiver {
             content = content.substring(3);
             BaseActivity.BmobData = content;
 
-            //调用man中的方法直接更改界面
-            Message msg = new Message();
-            if(flag.equals("loc")) {
-                String arr[] = content.split("#");
-                if(!arr[0].equals(DeviceLinkActivity.simple_Id)) {
-                    BaseActivity.BmobData = arr[1];
-                    msg.what = 4;
-                    Man_ManActivity.handler.sendMessage(msg);
+            if(BaseActivity.isStartGame) {
+                //调用man中的方法直接更改界面
+                Message msg = new Message();
+                if (flag.equals("loc")) {
+                    String arr[] = content.split("#");
+                    if (!arr[0].equals(DeviceLinkActivity.simple_Id)) {
+                        BaseActivity.BmobData = arr[1];
+                        msg.what = 4;
+                        Man_ManActivity.handler.sendMessage(msg);
+                    }
                 }
+            }else{
+                ToastUtil.showText(BaseApplication.getContext(), "对方等的花都谢了...");
             }
-
         }
 
     }

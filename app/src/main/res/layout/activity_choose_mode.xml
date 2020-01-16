@@ -7,10 +7,15 @@
     android:background="@drawable/text_back2"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.ChooseModeActivity">
-    <!--android:background="#d7f4fc"-->
+
+    <me.codeminions.attackaircraftproject.view.Voice_Key
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+
     <Button
         android:id="@+id/btn_start"
-        android:text="开始游戏"
+        android:text="@string/btn_start2"
         android:textSize="30sp"
         android:background="@drawable/block_bg"
         android:layout_marginBottom="45dp"
@@ -30,7 +35,7 @@
             android:layout_marginBottom="20dp"
             android:textSize="30sp"
             android:textStyle="bold"
-            android:text="双人对战"/>
+            android:text="@string/mode_two"/>
 
         <RadioButton
             android:id="@+id/btn_ptm"
@@ -39,7 +44,7 @@
             android:layout_height="wrap_content"
             android:textSize="30sp"
             android:textStyle="bold"
-            android:text="人机对战"/>
+            android:text="@string/mode_one"/>
 
     </RadioGroup>
 </LinearLayout>
