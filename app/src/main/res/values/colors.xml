@@ -4,5 +4,9 @@
     <color name="colorPrimaryDark">#2b2b2b</color>
     <color name="colorAccent">#D81B60</color>
 
-    <color name="select">#3F51B5</color>
+    <!--<color name="select">#3F51B5</color>-->
+    <!--<color name="select_b">#283EB7</color>-->
+    <color name="main_font">#283EB7</color>
+    <color name="select">#16245c</color>
+    <color name="select_b">#0d1740</color>
 </resources>

@@ -53,8 +53,6 @@
              android:theme="@style/NoActivityFullscreen"
          android:label="准备游戏"/>
 
-        <activity android:name=".ui.GamingActivity" />
-
         <activity
             android:name=".ui.Man_MachineActivity"
             android:label="人机对战模式界面"
@@ -63,7 +61,7 @@
             android:label="双人对战模式界面"
             android:theme="@style/NoActivityFullscreen"/>
 
-        <activity android:name=".TextActivity"
+        <activity android:name=".ui.TextActivity"
             android:label="游戏说明"/>
 
         <activity android:name=".ui.ChooseModeActivity"
@@ -104,7 +102,7 @@
             </intent-filter>
         </receiver>
 
-        <!-- 第3步中创建的消息接收器，在这里进行注册 -->
+        <!-- 创建的消息接收器广播，在这里进行注册 -->
         <receiver android:name="me.codeminions.attackaircraftproject.tool.MyPushMessageReceiver">
             <intent-filter >
                 <action android:name="cn.bmob.push.action.MESSAGE"/>

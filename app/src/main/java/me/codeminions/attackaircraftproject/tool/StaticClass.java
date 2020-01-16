@@ -25,6 +25,4 @@ public class StaticClass {
     // Key names received from the BluetoothChatService Handler
     // 从BluetoothChatService处理程序接收到的密钥名称
     public static final String DEVICE_NAME = "device_name";
-    public static final String TOAST = "toast";
-
 }

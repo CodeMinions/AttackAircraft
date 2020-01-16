@@ -7,9 +7,11 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,19 +19,19 @@ import java.util.Set;
 
 import me.codeminions.attackaircraftproject.R;
 import me.codeminions.attackaircraftproject.application.ActivityCollector;
+import me.codeminions.attackaircraftproject.tool.L;
 import me.codeminions.attackaircraftproject.tool.Location;
+import me.codeminions.attackaircraftproject.tool.MapTools;
 import me.codeminions.attackaircraftproject.tool.SerMap;
-import me.codeminions.attackaircraftproject.tool.ToastUtil;
-import me.codeminions.attackaircraftproject.tool.Tools;
+import me.codeminions.attackaircraftproject.tool.SoundPoolUtil;
+import me.codeminions.attackaircraftproject.tool.UtilTools;
 import me.codeminions.attackaircraftproject.view.Block;
 
 /**
  * 创建时间：2018/10/4 20:49
  * 描述：接受准备界面传来的数据，开始对战
  */
-public class Man_MachineActivity extends BaseActivity implements View.OnClickListener, View.OnLongClickListener {
-
-    boolean isFirst = true;
+public class Man_MachineActivity extends ClickActivity implements View.OnClickListener, View.OnLongClickListener {
 
     int count;
     //记录击中数
@@ -44,7 +46,7 @@ public class Man_MachineActivity extends BaseActivity implements View.OnClickLis
     LinearLayout linear_s;
 
     TextView textBroad;
-//    Button no_button;
+
     StringBuilder inform;
 
     ArrayList<Location> plane_l;
@@ -78,7 +80,7 @@ public class Man_MachineActivity extends BaseActivity implements View.OnClickLis
         //将自己的地图显示到屏幕,key为所有我的机头的集合
         Set<Location> key = my_plane_list.keySet();
 
-        setMyPlane(key);
+        MapTools.setMyPlane(key, plane_l, matrix_s, my_plane_list);
         setRandomPlane();
     }
 
@@ -86,8 +88,8 @@ public class Man_MachineActivity extends BaseActivity implements View.OnClickLis
         //循环直到生成三架位置不同的飞机
         while(true) {
             //生成一个随机位置与随机方向，由此生成一架飞机的全身坐标
-            Location location = Tools.RandomLocation();
-            plane_l = Tools.getRandomPlane(location, matrix, Tools.RandomLDirection());
+            Location location = MapTools.RandomLocation();
+            plane_l = MapTools.getRandomPlane(location, matrix, MapTools.RandomLDirection());
             //如果出来一架飞机，放入plane_list中
             if(plane_l.size() != 0) {
                 plane_list.put(plane_l.get(0), plane_l);
@@ -102,32 +104,10 @@ public class Man_MachineActivity extends BaseActivity implements View.OnClickLis
 //                    matrix[t.x][t.y].setBackgroundResource(R.drawable.select_block);
                 }
             }
-            //先试试1个
+
             if(plane_list.size() == 3)
                 break;
         }
-    }
-
-
-
-    private void setMyPlane(Set<Location> key){
-        for(Location l: key){
-//            plane_l为我的每个机头对应的机身坐标
-            plane_l = my_plane_list.get(l);
-
-            matrix_s[l.x][l.y].setBackgroundResource(R.drawable.select_block);
-            matrix_s[l.x][l.y].isPlane = true;
-            matrix_s[l.x][l.y].isTop = true;
-
-            for (Location t : plane_l) {
-                int x = t.x;
-                int y = t.y;
-
-                matrix_s[x][y].setBackgroundResource(R.drawable.select_block);
-                matrix_s[x][y].isPlane = true;
-            }
-        }
-        plane_l.clear();
     }
 
     private void init(){
@@ -139,9 +119,12 @@ public class Man_MachineActivity extends BaseActivity implements View.OnClickLis
         matrix = new Block[10][10];
         matrix_s = new Block[10][10];
 
-//        no_button = (Button) findViewById(R.id.no_btn);
-
         textBroad = (TextView) findViewById(R.id.textBroad);
+
+        textBroad.setTextSize(13);
+        textBroad.setTextColor(getResources().getColor(R.color.select));
+        textBroad.setTypeface(Typeface.SERIF);
+        textBroad.setText("AAAAAAAAAA");
 
         linear = (LinearLayout) findViewById(R.id.map);
         linear_s = (LinearLayout) findViewById(R.id.small_map);
@@ -176,51 +159,38 @@ public class Man_MachineActivity extends BaseActivity implements View.OnClickLis
         }
     }
 
+
+    @Override
+    public void click() {
+        setMusicType(MusicType.FIRST);
+    }
+
     @Override
     public void onClick(View v) {
-            if(count == 10){
-                count = 0;
+        SoundPoolUtil.getInstance(Man_MachineActivity.this).play();
+        L.i("fuck");
+        if(count%10 == 0){
                 inform = new StringBuilder();
             }
-
-            textBroad.setTextSize(13);
-            textBroad.setTextColor(getResources().getColor(R.color.select));
-            textBroad.setTypeface(Typeface.SERIF);
-            if(!((Block) v).isSelect){
-                ((Block) v).setBackgroundResource(R.drawable.select_block);
-                ((Block) v).isSelect = true;
-//                Toast.makeText(v.getContext(), "(" + String.valueOf(((Block) v).getLine()) + "," + String.valueOf(((Block) v).getList()) + ")", Toast.LENGTH_SHORT).show();
-                ToastUtil.showText(v.getContext(), "(" + String.valueOf(((Block) v).getLine()) + "," + String.valueOf(((Block) v).getList()) + ")");
-                inform.append("(" + String.valueOf(((Block) v).getLine()) + "," + String.valueOf(((Block) v).getList()) + ")" );
-
-                if(matrix[((Block) v).getLine()][((Block) v).getList()].isPlane){
-                    if(matrix[((Block) v).getLine()][((Block) v).getList()].isTop) {
-                        v.setBackgroundResource(R.drawable.block_boom);
-
-                        matrix[((Block) v).getLine()][((Block) v).getList()].isBoom = true;
-                        if(Top_Set.get(0).isBoom && Top_Set.get(1).isBoom && Top_Set.get(2).isBoom){
-                            setDialog("You Win...", null);
-                        }
-                    }
-                    inform.append("true" + '\n');
-                }else{
-                    inform.append("false" +  '\n');
-                }
-            }else{
-                ((Block) v).setBackgroundResource(R.drawable.block_bg);
-                ((Block) v).isSelect = false;
-            }
-            textBroad.setText(inform);
             count++;
-            enemyAttach();
 
+            UtilTools.A a = UtilTools.beClick(v, inform, matrix);
+            a.inform = inform;
+            a.m = matrix;
+            textBroad.setText(inform);
+
+            if(Top_Set.get(0).isBoom && Top_Set.get(1).isBoom && Top_Set.get(2).isBoom){
+                setDialog("You Win...", String.valueOf(count) + "步击败了对手！");
+            }
+
+            enemyAttach();
     }
 
 
     public void enemyAttach(){
         Location l;
         while (true){
-            l = Tools.RandomLocation();
+            l = MapTools.RandomLocation();
             if(!matrix_s[l.x][l.y].isSelect)
                 break;
         }
@@ -241,7 +211,7 @@ public class Man_MachineActivity extends BaseActivity implements View.OnClickLis
         }
     }
     public void setDialog(String inform, String mag){
-        AlertDialog.Builder dialog = Tools.setDialog(this, inform, mag);
+        AlertDialog.Builder dialog = UtilTools.setDialog(this, inform, mag);
         dialog.setPositiveButton("Leave", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -263,5 +233,14 @@ public class Man_MachineActivity extends BaseActivity implements View.OnClickLis
             ((Block) v).isFalse = true;
             return true;
         }
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        plane_l.clear();
+        plane_list.clear();
     }
 }
