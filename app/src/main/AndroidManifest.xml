@@ -102,7 +102,7 @@
             </intent-filter>
         </receiver>
 
-        <!-- 第3步中创建的消息接收器，在这里进行注册 -->
+        <!-- 创建的消息接收器广播，在这里进行注册 -->
         <receiver android:name="me.codeminions.attackaircraftproject.tool.MyPushMessageReceiver">
             <intent-filter >
                 <action android:name="cn.bmob.push.action.MESSAGE"/>
