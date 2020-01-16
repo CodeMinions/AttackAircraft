@@ -35,20 +35,6 @@ public class Tools {
     }
 
 
-    public static void main(String []args){
-        int  i = 0;
-        Location a;
-        int b;
-        while(i < 30){
-            a = RandomLocation();
-            b = RandomLDirection();
-            System.out.println(a.x + "  " + a.y + "         " + b);
-
-            i++;
-        }
-    }
-
-
     /**
      * 进来一个坐标和地图，返回一个数组，里面是一架飞机的坐标，首个为机头（即进来的的坐标）
      * */
